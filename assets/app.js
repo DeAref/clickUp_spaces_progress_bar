@@ -38,6 +38,7 @@
         const rows = spaces.map(function (space) {
             const barWidth = progressBarWidth(space.progress, space.has_estimate);
             const percentLabel = formatPercent(space.progress, space.has_estimate);
+            const remainingLabel = space.remaining_label || '';
             const color = escapeHtml(space.color || '#7B68EE');
             const avatar = space.avatar
                 ? '<img class="space-avatar" src="' + escapeHtml(space.avatar) + '" alt="" width="32" height="32" loading="lazy">'
@@ -50,9 +51,14 @@
                             avatar +
                             '<span class="space-name">' + escapeHtml(space.name) + '</span>' +
                         '</div>' +
-                        '<span class="space-percent' + (space.has_estimate ? '' : ' no-estimate') + '">' +
-                            escapeHtml(percentLabel) +
-                        '</span>' +
+                        '<div class="space-stats">' +
+                            '<span class="space-percent' + (space.has_estimate ? '' : ' no-estimate') + '">' +
+                                escapeHtml(percentLabel) +
+                            '</span>' +
+                            (remainingLabel
+                                ? '<span class="space-remaining">' + escapeHtml(remainingLabel) + '</span>'
+                                : '') +
+                        '</div>' +
                     '</div>' +
                     '<div class="progress-track' + (space.has_estimate ? '' : ' no-estimate') + '">' +
                         '<div class="progress-fill" style="width: ' + barWidth + '%; --space-color: ' + color + '"></div>' +

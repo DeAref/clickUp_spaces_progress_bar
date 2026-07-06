@@ -12,6 +12,7 @@ try {
         'ok' => true,
         'updated_at' => $data['updated_at'],
         'spaces' => $data['spaces'],
+        'summary' => computeAnalyticsSummary($data['spaces']),
     ], JSON_UNESCAPED_UNICODE);
 } catch (Throwable $e) {
     http_response_code(500);

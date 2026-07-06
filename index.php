@@ -35,6 +35,7 @@ $refreshInterval = (int) ($config['refresh_interval'] ?? 300);
                     <?php
                     $barWidth = progressBarWidth($space['progress'], $space['has_estimate']);
                     $percentLabel = formatPercent($space['progress'], $space['has_estimate']);
+                    $remainingLabel = $space['remaining_label'] ?? null;
                     $color = escape($space['color']);
                     ?>
                     <article class="space-row" data-space-id="<?= escape($space['space_id']) ?>">
@@ -56,9 +57,14 @@ $refreshInterval = (int) ($config['refresh_interval'] ?? 300);
                                 <?php endif; ?>
                                 <span class="space-name"><?= escape($space['name']) ?></span>
                             </div>
-                            <span class="space-percent<?= $space['has_estimate'] ? '' : ' no-estimate' ?>">
-                                <?= escape($percentLabel) ?>
-                            </span>
+                            <div class="space-stats">
+                                <span class="space-percent<?= $space['has_estimate'] ? '' : ' no-estimate' ?>">
+                                    <?= escape($percentLabel) ?>
+                                </span>
+                                <?php if ($remainingLabel !== null): ?>
+                                    <span class="space-remaining"><?= escape($remainingLabel) ?></span>
+                                <?php endif; ?>
+                            </div>
                         </div>
                         <div class="progress-track<?= $space['has_estimate'] ? '' : ' no-estimate' ?>">
                             <div

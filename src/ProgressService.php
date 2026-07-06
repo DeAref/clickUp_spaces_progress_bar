@@ -41,6 +41,7 @@ class ProgressService
                 'progress' => $metrics['progress'],
                 'total_estimate_ms' => $metrics['total_estimate_ms'],
                 'total_spent_ms' => $metrics['total_spent_ms'],
+                'remaining_ms' => $metrics['remaining_ms'],
                 'task_count' => count($spaceTasks),
                 'estimated_task_count' => $metrics['estimated_task_count'],
                 'has_estimate' => $metrics['has_estimate'],
@@ -90,6 +91,7 @@ class ProgressService
             'progress' => round($progress, 1),
             'total_estimate_ms' => $totalEstimate,
             'total_spent_ms' => $totalSpent,
+            'remaining_ms' => max(0, $totalEstimate - $totalSpent),
             'estimated_task_count' => $estimatedTaskCount,
             'has_estimate' => $hasEstimate,
         ];
