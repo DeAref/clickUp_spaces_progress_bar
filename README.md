@@ -1,6 +1,7 @@
 <div align="center">
 
 # 📊 ClickUp Space Progress Dashboard
+<img width="1920" height="934" alt="Screen Shot 1405-04-15 at 14 29 20" src="https://github.com/user-attachments/assets/17e6270f-d5ae-4af1-9b55-96581e592ffa" />
 
 ### One glance. Every Space. Real progress.
 
