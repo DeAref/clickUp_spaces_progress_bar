@@ -81,7 +81,7 @@ class ProgressService
 
             $estimatedTaskCount++;
             $totalEstimate += $estimate;
-            $totalSpent += $this->toInt($task['time_spent'] ?? null);
+            $totalSpent += $this->resolveTaskSpent($task, $estimate);
         }
 
         $hasEstimate = $totalEstimate > 0;
@@ -95,6 +95,22 @@ class ProgressService
             'estimated_task_count' => $estimatedTaskCount,
             'has_estimate' => $hasEstimate,
         ];
+    }
+
+    private function resolveTaskSpent(array $task, int $estimate): int
+    {
+        $spent = $this->toInt($task['time_spent'] ?? null);
+
+        if ($spent <= 0 && $this->isTaskComplete($task)) {
+            return $estimate;
+        }
+
+        return $spent;
+    }
+
+    private function isTaskComplete(array $task): bool
+    {
+        return ($task['status']['type'] ?? null) === 'closed';
     }
 
     private function toInt(mixed $value): int

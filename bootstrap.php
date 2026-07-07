@@ -219,3 +219,54 @@ function progressBarWidth(float $progress, bool $hasEstimate): float
 
     return min(100, max(0, $progress));
 }
+
+function emojiProgressBar(float $progress, bool $hasEstimate, int $segments = 10): string
+{
+    if (!$hasEstimate) {
+        return str_repeat('⬜', $segments);
+    }
+
+    $filled = (int) round(min(100, max(0, $progress)) / 100 * $segments);
+
+    return str_repeat('🟩', $filled) . str_repeat('⬜', $segments - $filled);
+}
+
+function formatRemainingDays(int $remainingMs, bool $hasEstimate): ?string
+{
+    if (!$hasEstimate || $remainingMs <= 0) {
+        return null;
+    }
+
+    $days = (int) ceil($remainingMs / (24 * 60 * 60 * 1000));
+
+    if ($days <= 0) {
+        return 'کمتر از ۱ روز مانده تا تکمیل';
+    }
+
+    return $days . ' روز مانده تا تکمیل';
+}
+
+function sendTelegramProgressReport(): array
+{
+    $config = loadAppConfig();
+
+    $botToken = trim((string) ($config['telegram_bot_token'] ?? ''));
+    $chatId = trim((string) ($config['telegram_chat_id'] ?? ''));
+
+    if ($botToken === '' || $chatId === '') {
+        throw new RuntimeException(
+            'Set telegram_bot_token and telegram_chat_id in config.php',
+        );
+    }
+
+    require_once __DIR__ . '/src/TelegramNotifier.php';
+
+    $data = getProgressData(true);
+    $notifier = new TelegramNotifier($botToken, $chatId);
+    $notifier->sendProgressReport($data['spaces'], $data['updated_at']);
+
+    return [
+        'updated_at' => $data['updated_at'],
+        'space_count' => count($data['spaces']),
+    ];
+}
